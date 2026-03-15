@@ -4,7 +4,7 @@
 
 ## Important notes: I am Hungarian. The images show settings and results in Hungarian. ##
 
-A guaranteed Wife Acceptance Factor (WAF) booster for Home Assistant :smile:
+A guaranteed Wife Acceptance Factor for Home Assistant :smile:
 
 We've had OpenAI integrated into our HA for a while now. I try to encourage the family to use it and ask questions. I also told my wife that if she has no idea what to cook, she should ask the AI for a good recipe. So far, so good. The AI tells you the recipe, and it can even repeat it, but it sucks to keep asking if you forget an ingredient. I wanted to find a way to display the recipe on a specific part of the dashboard. This way, the last requested recipe can be checked anytime while cooking. 
 
