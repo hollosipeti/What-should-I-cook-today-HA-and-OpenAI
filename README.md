@@ -113,7 +113,7 @@ actions:
     metadata: {}
     data:
       device_id: 683bee5a4c990541d620d1ac308a664d
-      url: [http://192.168.24.90:8123/lovelace-tablet/whatshouldIcooktoday](http://192.168.24.90:8123/lovelace-tablet/whatshouldIcooktoday)
+      url: http://192.168.24.90:8123/lovelace-tablet/whatshouldIcooktoday
 mode: single
 ```
 
