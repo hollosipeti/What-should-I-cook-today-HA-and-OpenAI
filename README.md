@@ -16,7 +16,7 @@ To achieve this, we will use a trigger-based Template Sensor. Its huge advantage
 
 Copy this text into the prompt/instructions field of your OpenAI Conversation integration:
 
-#### When the user asks for a food recipe, generate the complete recipe including ingredients and step-by-step instructions. You MUST use the available tool/script named 'Show recipe on ui' to pass the dish's name to the 'recipe_name' field, and the full text to the 'recipe_text' field. ####
+#### When the user asks for a food recipe, generate the complete recipe including ingredients and step-by-step instructions. You MUST use the available tool/script named 'Show recipe on ui' to pass the dish's name to 'recipe_name', the full text to 'recipe_text', and estimate the approximate calories (kcal) and carbohydrates (g) for the whole meal, passing them to the 'calories' and 'carbs' fields. ####
 
 If you want, you can also add this to prevent the AI from talking too much: 
 #### Important: Do NOT read the full recipe out loud. Verbally, you must reply ONLY with this short confirmation: "I have displayed the requested recipe on your screen." ####
@@ -31,27 +31,35 @@ This is what OpenAI will call. The script simply receives the text and sends it 
 
 ```yaml
 alias: Show recipe on ui
-description: This is called by OpenAI to pass the recipe and its name.
+description: This is called by OpenAI to pass the recipe and nutrition info.
 sequence:
   - event: update_recipe_display
     event_data:
       recipe_name: "{{ recipe_name }}"
       recipe_content: "{{ recipe_text }}"
+      calories: "{{ calories }}"
+      carbs: "{{ carbs }}"
 mode: single
 fields:
   recipe_name:
     selector:
       text: {}
     name: Recipe Name
-    description: The name of the dish (e.g., Spaghetti Bolognese).
-    required: true
   recipe_text:
     selector:
       text:
         multiline: true
     name: Recipe text
-    description: The full text of the generated recipe.
-    required: true
+  calories:
+    selector:
+      text: {}
+    name: Calories
+    description: "e.g., 1200 kcal"
+  carbs:
+    selector:
+      text: {}
+    name: Carbohydrates
+    description: "e.g., 150 g"
 ```
 
 ### 3. Creating the Template Sensor (configuration.yaml) ###
@@ -70,6 +78,8 @@ template:
         attributes:
           recipe_name: "{{ trigger.event.data.recipe_name }}"
           recipe_text: "{{ trigger.event.data.recipe_content }}"
+          calories: "{{ trigger.event.data.calories }}"
+          carbs: "{{ trigger.event.data.carbs }}"
 ```
 
 ### 4. The Dashboard Card (Lovelace UI) ###
@@ -81,7 +91,11 @@ type: markdown
 content: >-
   ## 👨‍🍳 {{ state_attr('sensor.kitchen_recipe', 'recipe_name') | default('New recipe', true) }}
 
-  {{ state_attr('sensor.kitchen_recipe', 'recipe_text') | default('No recipe to display yet. Ask your voice assistant for one!', true) }}
+  > **📊 Nutrition (approx.):** > 🔥 {{ state_attr('sensor.kitchen_recipe', 'calories') | default('?', true) }} | 🍞 {{ state_attr('sensor.kitchen_recipe', 'carbs') | default('?', true) }} 
+
+  ---
+
+  {{ state_attr('sensor.kitchen_recipe', 'recipe_text') | default('No recipe to display yet.', true) }}
 ```
 
 ### How does it work? ### 
@@ -90,7 +104,7 @@ When you ask for a recipe, OpenAI calls the Show recipe on ui script. The script
 
 ### And the result on my phone: ### 
 
-<img src="rk.png" width="45%"> <img src="tt.png" width="45%">
+<img src="1.png" width="45%"> <img src="2.png" width="45%">
 
 ##  Displaying on a tablet (Fully Kiosk): ##
 
@@ -157,6 +171,12 @@ sequence:
       title: "👨‍🍳 Recipe: {{ state_attr('sensor.kitchen_recipe', 'recipe_name') }}"
       message: |-
         Here is the requested recipe:
+        
+        📊 Nutrition Facts (Whole meal):
+        🔥 Calories: {{ state_attr('sensor.kitchen_recipe', 'calories') | default('No data', true) }}
+        🍞 Carbs: {{ state_attr('sensor.kitchen_recipe', 'carbs') | default('No data', true) }}
+        
+        -------------------------------------------
         
         {{ state_attr('sensor.kitchen_recipe', 'recipe_text') }}
 mode: single
