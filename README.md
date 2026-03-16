@@ -2,7 +2,7 @@
 
 ### What should I cook today? Displaying AI-generated recipes on the UI. Like it? Send it via email!
 
-## Important notes: I am Hungarian. The images show settings and results in Hungarian. ##
+### Important notes: I am Hungarian. The images show settings and results in Hungarian. ###
 
 A guaranteed Wife Acceptance Factor for Home Assistant :smile:
 
@@ -186,4 +186,6 @@ mode: single
 
 Finally, go to the page where you display the recipe, edit the dashboard, and add a Button card right below your Markdown card (the recipe text). This button should call the script created above. I use two buttons so I can send it to two different addresses: (for father and mother) 
 
-<img src="send.png" width="50%">
+<img src="send.png" width="60%">
+
+Peter
