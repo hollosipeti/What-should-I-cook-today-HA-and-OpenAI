@@ -1,5 +1,7 @@
 # What should I cook today with HA and OpenAI
 
+### 👨‍🍳🍳🛒🥦🍎🥖🥛🧀🍖🥘🍳🍴🧂🥗🍝🥗🍕☕🍰🍪🧁 ###
+
 ### What should I cook today? Displaying AI-generated recipes on the UI. Like it? Send it via email!
 
 ### Important notes: I am Hungarian. The images show settings and results in Hungarian. ###
